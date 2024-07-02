@@ -42,9 +42,7 @@ function newWebSocket() {
 
 function sendRequest(data) {
     const status = useStatusStore()
-    if (status.isLoggedIn) {
-        status.wss.send(data)
-    }
+    status.wss?.send(data)
 }
 
 export { newWebSocket, sendRequest }

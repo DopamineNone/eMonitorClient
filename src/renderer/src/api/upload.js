@@ -4,7 +4,7 @@
  */
 import { sendRequest } from '../utils/wss.js' // 导入发送请求函数
 
-function uploadRequest(data) {
+function uploadRequestHandler(data) {
     const uploadData = {
         type: 'screenshot',
         msg: {
@@ -15,4 +15,4 @@ function uploadRequest(data) {
     sendRequest(uploadData) // 发送请求
 }
 
-export { uploadRequest }
+export { uploadRequestHandler }

@@ -7,7 +7,7 @@ function InstructionHandler(frequencyInSeconds) {
     const configStore = useConfigStore()
 
     // 使用 configStore 访问和修改 store 中的状态和方法
-    configStore.setUploadFrequency(frequencyInSeconds * 1000)
+    configStore.uploadFrequency.value = frequencyInSeconds * 1000
 }
 
 // 导出响应函数

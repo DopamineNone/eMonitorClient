@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-// Define a store for client configuration
+// 客户端配置信息仓库
 export const useConfigStore = defineStore('config', () => {
-    // server url
+    // 服务端地址
     const baseUrl = 'ws://localhost:8080'
 
-    // upload frequency in milliseconds
+    // 上传频率（毫秒每次）
     const uploadFrequency = ref(10000)
 
-    // set upload frequency
+    // 设置上传频率
     function setUploadFrequency(frequency) {
         uploadFrequency.value = frequency
     }

@@ -8,6 +8,9 @@ Client for eMonitor, a web-based screen-monitoring system.
 # install dependencies
 npm install
 
+# run development server
+npm run dev
+
 # prebuild web-pages 
 npm run build
 

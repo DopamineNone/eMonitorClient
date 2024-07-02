@@ -15,8 +15,13 @@ function registerRequestHandler(username, password) {
     sendRequest(JSON.stringify(registerData)) // 发送请求
 }
 
-function registerResponseHandler(reponse) {
-    // 注册响应处理函数,看看api会怎么更新
+function registerResponseHandler(status) {
+    // 处理注册响应
+    if (status === 'success') {
+        
+    } else {
+
+    }
 }
 
 export { registerRequestHandler, registerResponseHandler }

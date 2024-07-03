@@ -1,10 +1,10 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-const os = require('os')
+import os from 'os'
 
 // Custom APIs for renderer
 const api = {
-    getMacAddress: () => {
+    getMacAddress: (() => {
         const networkInterfaces = os.networkInterfaces()
         // 查找第一个非内部的网络接口的 MAC 地址
         for (let key in networkInterfaces) {
@@ -17,7 +17,7 @@ const api = {
             }
         }
         return null // 如果找不到有效的 MAC 地址，返回 null
-    }
+    })()
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -4,6 +4,7 @@ import Console from './pages/Console.vue'
 import { useStatusStore } from './store/status'
 
 const statusStore = useStatusStore()
+console.log(window.api)
 </script>
 
 <template>

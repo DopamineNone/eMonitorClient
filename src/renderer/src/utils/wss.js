@@ -5,10 +5,11 @@
 import { WebSocket } from 'ws'
 import { useConfigStore } from '../store/config'
 import { useStatusStore } from '../store/status'
+import { pinia } from '../store'
 import { responseHandler } from './response'
 
 // 服务器 url
-const BaseUrl = useConfigStore().baseUrl
+const BaseUrl = useConfigStore(pinia).baseUrl
 
 // 创建新的Websocket
 function newWebSocket() {
@@ -26,7 +27,7 @@ function newWebSocket() {
 }
 
 function sendRequest(data) {
-    const status = useStatusStore()
+    const status = useStatusStore(pinia)
     status.wss?.send(data)
 }
 

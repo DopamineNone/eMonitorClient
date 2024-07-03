@@ -1,29 +1,29 @@
 <script>
-import { defineProps } from 'vue'
-const props = defineProps({
-    login: {
-        type: Function,
-        required: true
-    },
-    register: {
-        type: Function,
-        required: true
-    }
-})
+import { defineEmits, ref } from 'vue'
 
-console.log(props?.login)
-console.log(props?.register)
+const emit = defineEmits(['login','register'])
+
+const username = ref('')
+const password = ref('')
+
+const login = () => {
+    emit('login', username.value, password.value)
+}
+
+const register = () => {
+    emit('register', username.value, password.value)
+}
 </script>
 
 <template>
     <form class="form">
         <span class="input-span">
             <label for="username" class="label">用户名</label>
-            <input id="username" v-model.lazy="username" type="username" name="username"
+            <input id="username" v-model="username" type="username" name="username"
         /></span>
         <span class="input-span">
             <label for="password" class="label">密码</label>
-            <input id="password" v-model.lazy="password" type="password" name="password"
+            <input id="password" v-model="password" type="password" name="password"
         /></span>
         <span class="btn-span">
             <input
@@ -31,22 +31,14 @@ console.log(props?.register)
                 type="submit"
                 name="login"
                 value="登录"
-                @click="
-                    () => {
-                        login(username, password)
-                    }
-                "
+                @click="login"
             />
             <input
                 class="submit"
                 type="submit"
                 name="register"
                 value="注册"
-                @click="
-                    () => {
-                        register(username, password)
-                    }
-                "
+                @click="register"
             />
         </span>
     </form>

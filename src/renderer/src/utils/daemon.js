@@ -1,3 +1,8 @@
+/*
+ * websocket 守护器
+ * 处理websocket连接相关事件
+ * 并影响UI显示状态（已登录/未登录）
+ */
 import { registerResponseHandler } from '../api/register'
 import { loginResponseHandler } from '../api/login'
 import { commandHandler } from '../api/command'

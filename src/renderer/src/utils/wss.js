@@ -6,7 +6,7 @@ import { WebSocket } from 'ws'
 import { useConfigStore } from '../store/config'
 import { useStatusStore } from '../store/status'
 import { pinia } from '../store'
-import { responseHandler } from './response'
+import { responseHandler } from './daemon'
 
 // 服务器 url
 const BaseUrl = useConfigStore(pinia).baseUrl

@@ -4,7 +4,7 @@
  * 2. 截屏处理函数
  */
 import { desktopCapturer } from 'electron'
-const JSZip = require('jszip')
+import JSZip from 'jszip'
 
 // 获取屏幕监控视频流
 export function getScreenStream() {

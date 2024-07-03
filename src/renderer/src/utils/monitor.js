@@ -3,11 +3,10 @@
  * 1. 获取屏幕监控视频流函数
  * 2. 截屏处理函数
  */
-import { remote } from 'electron'
+import { desktopCapturer } from 'electron'
 
 // 获取屏幕监控视频流
 export function getScreenStream() {
-    const { desktopCapturer } = remote
     const options = { types: ['screen'] }
     const result = {
         status: 'pending',

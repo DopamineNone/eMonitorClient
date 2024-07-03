@@ -1,16 +1,16 @@
-<script>
-import { defineEmits, ref } from 'vue'
+<script setup>
+import { ref } from 'vue'
 
 const emit = defineEmits(['login','register'])
 
 const username = ref('')
 const password = ref('')
 
-const login = () => {
+function login() {
     emit('login', username.value, password.value)
 }
 
-const register = () => {
+function register() {
     emit('register', username.value, password.value)
 }
 </script>

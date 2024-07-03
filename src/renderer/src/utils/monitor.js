@@ -71,6 +71,6 @@ export function getScreenShot(videoDOM) {
     // 绘制视频到canvas上
     ctx.drawImage(videoDOM, 0, 0, canvas.width, canvas.height)
 
-    // 将canvas转换为图片
+    // 将canvas转换为图片(base64)
     return canvas.toDataURL('image/png')
 }

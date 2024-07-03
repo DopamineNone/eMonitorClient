@@ -73,6 +73,7 @@ code {
 }
 
 .vue {
+  font-size: 28px;
   background: -webkit-linear-gradient(315deg, #42d392 25%, #647eff);
   background-clip: text;
   -webkit-background-clip: text;

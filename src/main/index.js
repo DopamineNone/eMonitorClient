@@ -11,7 +11,7 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 900,
         height: 670,
         show: false,
@@ -30,7 +30,6 @@ function createWindow() {
     mainWindow.on('minimize', (event) => {
         event.preventDefault() // 阻止默认的最小化行为
         mainWindow.hide() // 隐藏窗口
-        toggleTray() // 显示托盘图标
     })
 
     mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -46,7 +45,7 @@ function createWindow() {
         mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     }
 }
-//托盘图标创建
+//托盘图标
 function createTray() {
     tray = new Tray(path.join(__dirname, '../../resources/icon.png')) //先拿图标代替
     const contextMenu = Menu.buildFromTemplate([
@@ -55,15 +54,15 @@ function createTray() {
     ])
     tray.setToolTip('captureClient')
     tray.setContextMenu(contextMenu)
+
+    tray.on('click', () => {
+        showWindow()
+    })
 }
 
-// 托盘显示/隐藏逻辑
-function toggleTray() {
-    if (tray === null) {
-        createTray()
-    } else {
-        tray.destroy()
-        tray = null
+function showWindow() {
+    if (mainWindow) {
+        mainWindow.show()
     }
 }
 

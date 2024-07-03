@@ -5,10 +5,12 @@
  */
 import { sendRequest } from '../utils/wss.js' // 导入发送请求函数
 function loginRequestHandler(username, password) {
+    const mac = window.api.getMacAddress() // 获取mac地址
     const loginData = {
         type: 'login',
         username: username,
-        password: password
+        password: password,
+        mac: mac
     }
 
     sendRequest(JSON.stringify(loginData)) // 发送登录请求

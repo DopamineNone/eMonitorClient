@@ -1,5 +1,5 @@
 /*
- * WebSocket 连接器封装
+ * WebSocket 连接器基础封装
  */
 
 import { WebSocket } from 'ws'

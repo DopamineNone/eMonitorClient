@@ -2,9 +2,10 @@
 import Auth from './pages/Auth.vue'
 import Console from './pages/Console.vue'
 import { useStatusStore } from './store/status'
+import { onBeforeMount } from 'vue'
 
 const statusStore = useStatusStore()
-// console.log(window.api.mac)
+console.log(window.api.getMacAddress)
 console.log(statusStore.isLoggedIn)
 </script>
 

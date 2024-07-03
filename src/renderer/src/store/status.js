@@ -12,13 +12,9 @@ export const useStatusStore = defineStore('status', () => {
     // 登录标志位
     const isLoggedIn = ref(false)
 
-    // 主机MAC地址
-    const macAddress = ref('')
-
     return {
         wss,
         videoStream,
-        isLoggedIn,
-        macAddress
+        isLoggedIn
     }
 })

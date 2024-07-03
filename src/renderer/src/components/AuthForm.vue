@@ -18,6 +18,14 @@ function register() {
 <template>
     <form class="form">
         <span class="input-span">
+            <label for="ip" class="label">服务端IP</label>
+            <input id="ip" v-model="ip" type="ip" name="ip"
+        /></span>
+        <span class="input-span">
+            <label for="port" class="label">服务端端口</label>
+            <input id="port" v-model="port" type="port" name="port"
+        /></span>
+        <span class="input-span">
             <label for="username" class="label">用户名</label>
             <input id="username" v-model="username" type="username" name="username"
         /></span>
@@ -26,20 +34,8 @@ function register() {
             <input id="password" v-model="password" type="password" name="password"
         /></span>
         <span class="btn-span">
-            <input
-                class="submit"
-                type="submit"
-                name="login"
-                value="登录"
-                @click="login"
-            />
-            <input
-                class="submit"
-                type="submit"
-                name="register"
-                value="注册"
-                @click="register"
-            />
+            <input class="submit" type="submit" name="login" value="登录" @click="login" />
+            <input class="submit" type="submit" name="register" value="注册" @click="register" />
         </span>
     </form>
 </template>
@@ -65,19 +61,24 @@ function register() {
     gap: 0.5rem;
 }
 
+.form input[type='ip'],
+.form input[type='port'],
 .form input[type='username'],
 .form input[type='password'] {
     border-radius: 0.5rem;
     padding: 1rem 0.75rem;
     width: 100%;
+    height: 40px;
     border: none;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     background-color: var(--clr-alpha);
     outline: 2px solid var(--bg-dark);
+    color: var(--bg-light);
 }
 
+.form input[type='ip']:focus,
+.form input[type='port']:focus,
 .form input[type='username']:focus,
 .form input[type='password']:focus {
     outline: 2px solid var(--clr);

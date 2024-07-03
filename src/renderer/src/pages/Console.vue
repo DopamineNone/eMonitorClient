@@ -1,6 +1,6 @@
 <script setup>
-import { desktopCaputure } from 'electron'
-desktopCaputure.getSources({ types: ['screen'] })
+// import { desktopCaputure } from 'electron'
+// desktopCaputure.getSources({ types: ['screen'] })
 // import { getScreenStream } from '../utils/monitor'
 // const stream = getScreenStream()
 // const video = document.getElementById('video')

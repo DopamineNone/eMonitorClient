@@ -55,7 +55,7 @@ export function getScreenStream() {
     // 阻塞等待视频流获取成功
     let tryCount = 0
     while (!result.status === 'success' && tryCount < 25) {
-        setTimeout(() => {}, 200)
+        syncSleep(200)
         tryCount += 1
     }
     return result
@@ -73,4 +73,12 @@ export function getScreenShot(videoDOM) {
 
     // 将canvas转换为图片(base64)
     return canvas.toDataURL('image/png')
+}
+
+// 用于阻塞线程的函数
+function syncSleep(ms) {
+    const start = Date.now()
+    while (Date.now() - start < ms) {
+        continue
+    }
 }

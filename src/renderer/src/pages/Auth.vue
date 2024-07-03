@@ -15,7 +15,7 @@ const status = useStatusStore()
     <AuthForm
         :is-connected="status.isConnected"
         @login="loginRequestHandler"
-        @register="loginRequestHandler"
+        @register="registerRequestHandler"
         @connect="runWebSocket"
         @disconnect="closeWebSocket"
     />

@@ -1,16 +1,54 @@
+<script>
+import { defineProps } from 'vue'
+const props = defineProps({
+    login: {
+        type: Function,
+        required: true
+    },
+    register: {
+        type: Function,
+        required: true
+    }
+})
+
+console.log(props?.login)
+console.log(props?.register)
+</script>
+
 <template>
     <form class="form">
         <span class="input-span">
-            <label for="email" class="label">Email</label>
-            <input id="email" type="email" name="email"
+            <label for="username" class="label">用户名</label>
+            <input id="username" v-model.lazy="username" type="username" name="username"
         /></span>
         <span class="input-span">
-            <label for="password" class="label">Password</label>
-            <input id="password" type="password" name="password"
+            <label for="password" class="label">密码</label>
+            <input id="password" v-model.lazy="password" type="password" name="password"
         /></span>
-        <span class="span"><a href="#">Forgot password?</a></span>
-        <input class="submit" type="submit" value="Log in" />
-        <span class="span">Don"t have an account? <a href="#">Sign up</a></span>
+        <span class="btn-span">
+            <input
+                class="submit"
+                type="submit"
+                name="login"
+                value="登录"
+                @click="
+                    () => {
+                        login(username, password)
+                    }
+                "
+            />
+            <input
+                class="submit"
+                type="submit"
+                name="register"
+                value="注册"
+                @click="
+                    () => {
+                        register(username, password)
+                    }
+                "
+            />
+        </span>
     </form>
 </template>
 
@@ -35,7 +73,7 @@
     gap: 0.5rem;
 }
 
-.form input[type='email'],
+.form input[type='username'],
 .form input[type='password'] {
     border-radius: 0.5rem;
     padding: 1rem 0.75rem;
@@ -48,7 +86,7 @@
     outline: 2px solid var(--bg-dark);
 }
 
-.form input[type='email']:focus,
+.form input[type='username']:focus,
 .form input[type='password']:focus {
     outline: 2px solid var(--clr);
 }
@@ -59,7 +97,15 @@
     font-weight: 600;
 }
 
-.form .submit {
+.btn-span {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-span .submit {
     padding: 1rem 0.75rem;
     width: 100%;
     display: flex;
@@ -75,7 +121,7 @@
     font-size: 0.9rem;
 }
 
-.form .submit:hover {
+.btn-span .submit:hover {
     background-color: var(--clr);
     color: var(--bg-dark);
 }

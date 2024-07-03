@@ -4,7 +4,6 @@
  * 2. 登录响应函数
  */
 import { sendRequest } from '../utils/wss.js' // 导入发送请求函数
-import { useStatusStore } from '../store/status.js'
 function loginRequestHandler(username, password) {
     const loginData = {
         type: 'login',
@@ -16,10 +15,7 @@ function loginRequestHandler(username, password) {
 }
 
 function loginResponseHandler(status) {
-    if (status === 'success') {
-        const statusStore = useStatusStore()
-        statusStore.isLoggedIn = true // 登录成功，设置状态
-    }
+    return status === 'success'
 }
 
 export { loginRequestHandler, loginResponseHandler }

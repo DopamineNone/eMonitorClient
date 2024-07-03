@@ -3,7 +3,7 @@
  * 1. 配置响应函数
  */
 import { useConfigStore } from '../store/config.js'
-function CommandHandler(frequencyInSeconds) {
+function commandHandler(frequencyInSeconds) {
     const configStore = useConfigStore()
 
     // 使用 configStore 修改 store 中的状态
@@ -11,4 +11,4 @@ function CommandHandler(frequencyInSeconds) {
 }
 
 // 导出响应函数
-export { CommandHandler }
+export { commandHandler }

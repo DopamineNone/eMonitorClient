@@ -48,11 +48,13 @@ code {
 }
 
 .creator {
+  position: absolute;
+  bottom: 10px;
   font-size: 14px;
   line-height: 16px;
   color: var(--ev-c-text-2);
   font-weight: 600;
-  margin-bottom: 10px;
+  margin: 0 auto;
 }
 
 .text {
@@ -79,6 +81,10 @@ code {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 700;
+}
+
+.vue:hover {
+  filter: drop-shadow(0 0 1.2em #6988e6aa);
 }
 
 .actions {
@@ -119,7 +125,7 @@ code {
 
 .versions {
   position: absolute;
-  bottom: 30px;
+  bottom: 40px;
   margin: 0 auto;
   padding: 15px 0;
   font-family: 'Menlo', 'Lucida Console', monospace;

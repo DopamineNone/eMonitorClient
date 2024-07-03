@@ -47,12 +47,12 @@ function createWindow() {
 }
 //托盘图标
 function createTray() {
-    tray = new Tray(path.join(__dirname, '../../resources/icon.png')) //先拿图标代替
+    tray = new Tray(path.join(__dirname, '../../build/icon.ico')) //先拿图标代替
     const contextMenu = Menu.buildFromTemplate([
         { label: '显示应用', click: () => mainWindow.show() },
         { label: '退出', click: () => app.quit() }
     ])
-    tray.setToolTip('captureClient')
+    tray.setToolTip('eMonitor')
     tray.setContextMenu(contextMenu)
 
     tray.on('click', () => {

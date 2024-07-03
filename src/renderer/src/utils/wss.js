@@ -3,17 +3,13 @@
  */
 
 import { WebSocket } from 'ws'
-import { useConfigStore } from '../store/config'
 import { useStatusStore } from '../store/status'
 import { pinia } from '../store'
 import { responseHandler } from './daemon'
 
-// 服务器 url
-const BaseUrl = useConfigStore(pinia).baseUrl
-
 // 创建新的Websocket
-function newWebSocket() {
-    const wss = new WebSocket(BaseUrl)
+function newWebSocket(serverIp = 'localhost', serverPort = 8080) {
+    const wss = new WebSocket(`ws://${serverIp}:${serverPort}`)
 
     wss.on('open', responseHandler.openHandler)
 
@@ -31,4 +27,15 @@ function sendRequest(data) {
     status.wss?.send(data)
 }
 
-export { newWebSocket, sendRequest }
+function runWebSocket(serverIP, serverPort) {
+    const wss = newWebSocket(serverIP, serverPort)
+    useStatusStore(pinia).wss = wss
+}
+
+function closeWebSocket() {
+    const status = useStatusStore(pinia)
+    status.wss?.close(1000, 'close by client')
+    status.wss = null
+}
+
+export { runWebSocket, closeWebSocket, sendRequest }

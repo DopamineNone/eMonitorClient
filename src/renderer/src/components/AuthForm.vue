@@ -1,8 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 
-const emit = defineEmits(['login','register'])
+const emit = defineEmits(['login', 'register', 'connect', 'disconnect'])
+const props = defineProps({
+    isConnected: {
+        type: Boolean,
+        default: false
+    }
+})
 
+const isConnected = ref(props.isConnected)
+const ip = ref('')
+const port = ref('')
 const username = ref('')
 const password = ref('')
 
@@ -13,10 +22,18 @@ function login() {
 function register() {
     emit('register', username.value, password.value)
 }
+
+function connect() {
+    emit('connect', ip.value, port.value)
+}
+
+function disconnect() {
+    emit('disconnect')
+}
 </script>
 
 <template>
-    <form class="form">
+    <form v-if="!isConnected" id="service-form" class="form">
         <span class="input-span">
             <label for="ip" class="label">服务端IP</label>
             <input id="ip" v-model="ip" type="ip" name="ip"
@@ -25,6 +42,11 @@ function register() {
             <label for="port" class="label">服务端端口</label>
             <input id="port" v-model="port" type="port" name="port"
         /></span>
+        <span class="btn-span">
+            <input class="submit" type="submit" name="login" value="连接" @click="connect" />
+        </span>
+    </form>
+    <form v-else id="auth-form" class="form">
         <span class="input-span">
             <label for="username" class="label">用户名</label>
             <input id="username" v-model="username" type="username" name="username"
@@ -36,6 +58,9 @@ function register() {
         <span class="btn-span">
             <input class="submit" type="submit" name="login" value="登录" @click="login" />
             <input class="submit" type="submit" name="register" value="注册" @click="register" />
+        </span>
+        <span class="btn-span">
+            <input class="submit" type="submit" name="login" value="断开连接" @click="disconnect" />
         </span>
     </form>
 </template>

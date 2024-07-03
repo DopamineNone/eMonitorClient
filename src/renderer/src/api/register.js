@@ -18,9 +18,7 @@ function registerRequestHandler(username, password) {
 function registerResponseHandler(status) {
     // 处理注册响应
     if (status === 'success') {
-        
     } else {
-
     }
 }
 

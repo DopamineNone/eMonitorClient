@@ -4,6 +4,8 @@ import Console from './pages/Console.vue'
 import { useStatusStore } from './store/status'
 
 const statusStore = useStatusStore()
+// console.log(window.api.mac)
+console.log(statusStore.isLoggedIn)
 </script>
 
 <template>

@@ -1,10 +1,10 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 // import os from 'os'
-import getMAC from 'getmac'
+import { getMac } from 'getmac'
 
 const api = {
-    mac: getMAC()
+    // mac: getMac()
 }
 
 // Custom APIs for renderer

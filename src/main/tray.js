@@ -12,12 +12,12 @@ export function createTray(tray, mainWindow, app) {
     tray.setContextMenu(contextMenu)
 
     tray.on('click', () => {
-        showWindow()
+        mainWindow.show()
     })
 }
 
-function showWindow(mainWindow) {
-    if (mainWindow) {
-        mainWindow.show()
-    }
-}
+// export function showWindow(mainWindow) {
+//     if (mainWindow) {
+//         mainWindow.show()
+//     }
+// }

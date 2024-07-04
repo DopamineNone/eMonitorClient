@@ -31,13 +31,13 @@ app.whenReady().then(() => {
         optimizer.watchWindowShortcuts(window)
     })
 
-    // IPC test
-    ipcMain.on('ping', () => console.log('pong'))
+    // 监听窗口大小变化
     ipcMain.on('resize', (event, width, height) => {
         mainWindow.setSize(width, height)
         mainWindow.center()
     })
 
+    // 创建窗口
     mainWindow = createWindow()
     createTray(tray, mainWindow, app)
 

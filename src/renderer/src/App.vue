@@ -11,7 +11,7 @@ onBeforeMount(() => {
     getScreenStream()
 })
 
-console.log(window.api.getMacAddress)
+console.log('MAC:', window.api.MAC)
 console.log(statusStore.isLoggedIn)
 </script>
 

@@ -11,6 +11,12 @@ const api = {
     setWindowSize: (width, height) => {
         // 向主进程发送消息，通知其修改窗口大小
         ipcRenderer.send('resize', width, height + (window.outerHeight - window.innerHeight))
+    },
+    closeWindow: () => {
+        ipcRenderer.send('close')
+    },
+    minimizeWindow: () => {
+        ipcRenderer.send('minimize')
     }
 }
 

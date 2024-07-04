@@ -23,10 +23,10 @@ export function createWindow() {
     })
 
     // 隐藏窗口设置
-    mainWindow.on('minimize', (event) => {
-        event.preventDefault() // 阻止默认的最小化行为
-        mainWindow.hide() // 隐藏窗口
-    })
+    // mainWindow.on('minimize', (event) => {
+    //     event.preventDefault() // 阻止默认的最小化行为
+    //     mainWindow.hide() // 隐藏窗口
+    // })
 
     mainWindow.webContents.setWindowOpenHandler((details) => {
         shell.openExternal(details.url)

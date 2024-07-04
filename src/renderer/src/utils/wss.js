@@ -9,17 +9,19 @@ import { responseHandler } from './daemon'
 
 // 创建新的Websocket
 function newWebSocket(serverIp = 'localhost', serverPort = 8080) {
-    const wss = new WebSocket(`ws://${serverIp}:${serverPort}`)
+    try {
+        const wss = new WebSocket(`ws://${serverIp}:${serverPort}`)
 
-    wss.on('open', responseHandler.openHandler)
+        wss.on('open', responseHandler.openHandler)
+        wss.on('message', responseHandler.messageHandler)
+        wss.on('close', responseHandler.closeHandler)
+        wss.on('error', responseHandler.errorHandler)
 
-    wss.on('message', responseHandler.messageHandler)
-
-    wss.on('close', responseHandler.closeHandler)
-
-    wss.on('error', responseHandler.errorHandler)
-
-    return wss
+        return wss
+    } catch (error) {
+        console.error(error)
+        return null
+    }
 }
 
 function sendRequest(data) {
@@ -29,7 +31,9 @@ function sendRequest(data) {
 
 function runWebSocket(serverIP, serverPort) {
     const wss = newWebSocket(serverIP, serverPort)
-    useStatusStore(pinia).wss = wss
+    if (wss !== null) {
+        useStatusStore(pinia).wss = wss
+    }
 }
 
 function closeWebSocket() {

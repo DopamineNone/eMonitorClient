@@ -1,10 +1,11 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { ipcRenderer } from 'electron'  
 import os from 'os'
 
 // Custom APIs for renderer
 const api = {
-    getMacAddress: (() => {
+    MAC: (() => {
         const networkInterfaces = os.networkInterfaces()
         // 查找第一个非内部的网络接口的 MAC 地址
         for (let key in networkInterfaces) {
@@ -17,7 +18,10 @@ const api = {
             }
         }
         return null // 如果找不到有效的 MAC 地址，返回 null
-    })()
+    })(),
+    setWindowSize: (width, height) => {
+        ipcRenderer.send('resize', width, height + (window.outerHeight - window.innerHeight))
+    }
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to

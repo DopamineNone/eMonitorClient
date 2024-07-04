@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, reactive, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 // 与客户端主机有关的信息仓库
 export const useStatusStore = defineStore('status', () => {

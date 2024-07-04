@@ -3,107 +3,83 @@
  * 1. 获取屏幕监控视频流函数
  * 2. 截屏处理函数
  */
-import { desktopCapturer } from 'electron'
 import JSZip from 'jszip'
+import { useStatusStore } from '../store/status'
+import { pinia } from '../store/index'
+import { watchEffect } from 'vue'
+import { uploadRequestHandler } from '../api/upload'
 
-// 获取屏幕监控视频流
-export function getScreenStream() {
-    const options = { types: ['screen'] }
-    const result = {
-        status: 'pending',
-        data: null,
-        err: null
-    }
+let timer = null
 
-    // 获取视频流子函数
-    const getStream = () => {
-        desktopCapturer
-            .getSources(options)
-            .then((sources) => {
-                for (const source of sources) {
-                    // 找到全屏幕监控的视频流
-                    if (source.name === 'Entire screen' || source.name === 'Screen 0') {
-                        navigator.mediaDevices
-                            .getUserMedia({
-                                audio: false,
-                                video: {
-                                    mandatory: {
-                                        chromeMediaSource: 'desktop',
-                                        chromeMediaSourceId: source.id
-                                    }
-                                }
-                            })
-                            // 获取视频流成功
-                            .then((stream) => {
-                                result.status = 'success'
-                                result.data = stream
-                            })
-                            // 获取视频流失败
-                            .catch((error) => {
-                                result.err = error
-                                console.log(error)
-                            })
-                    }
-                }
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-    getStream()
+// 获取屏幕监控视频流函数
+export async function getScreenStream() {
+    const stream = await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+            mandatory: {
+                chromeMediaSource: 'desktop',
+                chromeMediaSourceId: 'screen:0:0',
+                width: 1280,
+                height: 720
+            }
+        }
+    })
 
-    // 阻塞等待视频流获取成功
-    let tryCount = 0
-    while (!result.status === 'success' && tryCount < 25) {
-        syncSleep(200)
-        tryCount += 1
+    useStatusStore(pinia).stream = stream
+}
+
+// 定时截屏器
+export function runScreenShotTimer(video) {
+    const frequency = useStatusStore(pinia).uploadFrequency
+    const Timer = () => {
+        return setInterval(getScreenShot(video), frequency)
     }
-    return result
+    timer = Timer()
+    watchEffect(() => {
+        frequency
+        clearInterval(timer)
+        timer = Timer()
+    })
+}
+
+export function stopScreenShotTimer() {
+    clearInterval(timer)
 }
 
 // 截屏处理函数
-export function getScreenShot(videoDOM) {
+function getScreenShot(videoDOM) {
     const canvas = document.createElement('canvas')
-    canvas.width = videoDOM.videoWidth
-    canvas.height = videoDOM.videoHeight
+    canvas.width = 1280
+    canvas.height = 720
     const ctx = canvas.getContext('2d')
 
     // 绘制视频到canvas上
     ctx.drawImage(videoDOM, 0, 0, canvas.width, canvas.height)
 
-    // 将canvas转换为图片(base64)
-    return canvas.toDataURL('image/png')
-}
+    // 将canvas转换为图片,再转换为ZIP文件的base64编码数据，并将结果推入上传任务队列
+    canvas.toBlob(
+        async (blob) => {
+            const zip = new JSZip()
+            const screenshotData = await blob.arrayBuffer()
 
-// 用于阻塞线程的函数
-function syncSleep(ms) {
-    const start = Date.now()
-    while (Date.now() - start < ms) {
-        continue
-    }
-}
+            // 获取截图的 base64 编码图像数据,以及时间戳
+            const timestamp = Date.now()
+            const filename = `screenshot_${timestamp}.png`
 
-//使用了上面的getScreenshot函数
-export function shot2zipONbase64(videoDOM) {
-    // 创建一个新的 JSZip 实例
-    const zip = new JSZip()
+            // 将 base64 图像数据添加到 ZIP 文件中，使用时间戳命名文件
+            zip.file(filename, screenshotData)
 
-    // 获取截图的 base64 编码图像数据,以及时间戳
-    let screenshotData = getScreenShot(videoDOM)
-    const timestamp = Date.now()
-    const filename = `screenshot_${timestamp}.png`
-
-    // 将 base64 图像数据添加到 ZIP 文件中，使用时间戳命名文件
-    zip.file(filename, screenshotData.split('base64,')[1], { base64: true })
-
-    // 生成 ZIP 文件
-    return zip
-        .generateAsync({ type: 'base64' })
-        .then(function (base64) {
-            return base64
-        })
-        .catch(function (err) {
-            console.error('Error creating ZIP file: ', err)
-            return null
-        })
+            // 生成 ZIP 文件，在进行 base64 编码并上传
+            zip.generateAsync({ type: 'uint8array' })
+                .then((buffer) => {
+                    const screenshot = btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)))
+                    uploadRequestHandler(screenshot)
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        },
+        'image/png',
+        1
+    )
 }

@@ -1,25 +1,15 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { ipcRenderer } from 'electron'  
-import os from 'os'
+import { ipcRenderer } from 'electron'
+import getmac from 'getmac'
 
-// Custom APIs for renderer
+// 向渲染进程暴露的API
 const api = {
-    MAC: (() => {
-        const networkInterfaces = os.networkInterfaces()
-        // 查找第一个非内部的网络接口的 MAC 地址
-        for (let key in networkInterfaces) {
-            const iface = networkInterfaces[key]
-            for (let i = 0; i < iface.length; i++) {
-                const { address, internal } = iface[i]
-                if (!internal && address && address !== '127.0.0.1' && address !== '::1') {
-                    return iface[i].mac.toUpperCase()
-                }
-            }
-        }
-        return null // 如果找不到有效的 MAC 地址，返回 null
-    })(),
+    // 获取主机MAC地址
+    MAC: getmac.default(),
+    // 修改主窗口大小
     setWindowSize: (width, height) => {
+        // 向主进程发送消息，通知其修改窗口大小
         ipcRenderer.send('resize', width, height + (window.outerHeight - window.innerHeight))
     }
 }

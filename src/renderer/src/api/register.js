@@ -5,21 +5,21 @@
  */
 import { sendRequest } from '../utils/wss.js' // 导入发送请求函数
 
-function registerRequestHandler(username, password) {
+export function registerRequestHandler(username, password) {
     const registerData = {
         type: 'register',
         username: username,
         password: password
     }
 
-    sendRequest(JSON.stringify(registerData)) // 发送请求
+    sendRequest(registerData) // 发送请求
 }
 
-function registerResponseHandler(status) {
+export function registerResponseHandler(status) {
     // 处理注册响应
-    // if (status === 'success') {
-    // } else {
-    // }
+    if (status === 'success') {
+        // 注册成功弹窗
+    } else {
+        // 注册失败弹窗
+    }
 }
-
-export { registerRequestHandler, registerResponseHandler }

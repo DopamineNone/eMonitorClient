@@ -9,7 +9,7 @@ export function uploadRequestHandler(data) {
         type: 'screenshot',
         msg: {
             timestamp: new Date().toISOString(), // 时间戳
-            screenshot: data //base64格式的图片数据
+            screenshot: data //base64格式的压缩图片数据
         }
     }
     sendRequest(uploadData) // 发送请求

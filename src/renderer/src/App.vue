@@ -11,8 +11,13 @@ onBeforeMount(() => {
     getScreenStream()
 })
 
-console.log('MAC:', window.api.MAC)
-console.log(statusStore.isLoggedIn)
+// console.log('MAC:', window.api.MAC)
+// console.log(statusStore.isLoggedIn)
+
+// window.onbeforeunload = (e) => {
+//     e.preventDefault()
+//     window.api.minimizeWindow()
+// }
 </script>
 
 <template>

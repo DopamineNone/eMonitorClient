@@ -1,7 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { createWindow } from './init'
 import { createTray } from './tray'
+import { loadIPCListeners } from './ipc'
 
 let tray = null
 let mainWindow = null
@@ -31,15 +32,10 @@ app.whenReady().then(() => {
         optimizer.watchWindowShortcuts(window)
     })
 
-    // 监听窗口大小变化
-    ipcMain.on('resize', (event, width, height) => {
-        mainWindow.setSize(width, height)
-        mainWindow.center()
-    })
-
     // 创建窗口
     mainWindow = createWindow()
     createTray(tray, mainWindow, app)
+    loadIPCListeners(mainWindow, app)
 
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the

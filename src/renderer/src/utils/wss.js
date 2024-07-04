@@ -26,7 +26,7 @@ function newWebSocket(serverIp = 'localhost', serverPort = 8080) {
 
 function sendRequest(data) {
     const status = useStatusStore(pinia)
-    status.wss?.send(data)
+    status.wss?.send(JSON.stringify(data))
 }
 
 function runWebSocket(serverIP, serverPort) {

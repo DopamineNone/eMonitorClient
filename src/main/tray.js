@@ -6,7 +6,13 @@ export function createTray(tray, mainWindow, app) {
     tray = new Tray(path.join(__dirname, '../../build/icon.ico')) //先拿图标代替
     const contextMenu = Menu.buildFromTemplate([
         { label: '显示应用', click: () => mainWindow.show() },
-        { label: '退出', click: () => app.quit() }
+        {
+            label: '退出',
+            click: () => {
+                mainWindow.destroy()
+                app.quit()
+            }
+        }
     ])
     tray.setToolTip('eMonitor')
     tray.setContextMenu(contextMenu)

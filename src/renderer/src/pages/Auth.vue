@@ -21,5 +21,5 @@ const status = useStatusStore()
     />
     <Versions />
     <div class="creator">Powered by electron-vite</div>
-    <button @click="useStatusStore().isLoggedIn = true">Close</button>
+    <!-- <button @click="useStatusStore().isLoggedIn = true">Close</button> -->
 </template>

@@ -5,24 +5,22 @@
  */
 import { useStatusStore } from '../store/status.js'
 import { pinia } from '../store/index.js'
-import { sendRequest } from '../utils/wss.js' // 导入发送请求函数
-function loginRequestHandler(username, password) {
-    const mac = window.api.getMacAddress // 获取mac地址
+import { sendRequest } from '../utils/wss.js'
+
+export function loginRequestHandler(username, password) {
     const loginData = {
         type: 'login',
         username: username,
         password: password,
-        mac: mac
+        mac: window.api.MAC // 获取本机MAC地址
     }
 
-    sendRequest(JSON.stringify(loginData)) // 发送登录请求
+    sendRequest(loginData) // 发送登录请求
 }
 
-function loginResponseHandler(status) {
+export function loginResponseHandler(status) {
     if (status === 'success') {
         const statusStore = useStatusStore(pinia)
         statusStore.loginStatus = true // 设置登录状态为true
     }
 }
-
-export { loginRequestHandler, loginResponseHandler }

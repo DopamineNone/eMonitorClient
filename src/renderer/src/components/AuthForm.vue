@@ -121,6 +121,7 @@ function disconnect() {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    margin: 1rem 0;
 }
 
 .btn-span .submit,

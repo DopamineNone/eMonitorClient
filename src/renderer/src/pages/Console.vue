@@ -32,7 +32,6 @@ onBeforeMount(() => {
 onMounted(() => {
     const video = document.getElementById('video')
     if (video && status.stream instanceof MediaStream) {
-        console.log('Cosole', video)
         video.srcObject = status.stream
         video.play()
     }

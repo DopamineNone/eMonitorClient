@@ -3,8 +3,6 @@ import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { createWindow } from './init'
 import { createTray } from './tray'
 
-const path = require('path')
-
 let tray = null
 let mainWindow
 
@@ -35,9 +33,14 @@ app.whenReady().then(() => {
 
     // IPC test
     ipcMain.on('ping', () => console.log('pong'))
+    ipcMain.on('resize', (event, width, height) => {
+        mainWindow.setSize(width, height)
+        mainWindow.center()
+    })
 
-    createWindow(mainWindow)
+    mainWindow = createWindow()
     createTray(tray, mainWindow, app)
+
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.

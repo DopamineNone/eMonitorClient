@@ -4,9 +4,9 @@ import { join } from 'path'
 import icon from '../../resources/icon.png?asset'
 
 // 创建主窗口
-export function createWindow(mainWindow) {
+export function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         width: 640,
         height: 735,
         show: false,
@@ -40,4 +40,6 @@ export function createWindow(mainWindow) {
     } else {
         mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
     }
+
+    return mainWindow
 }

@@ -9,7 +9,6 @@ const props = defineProps({
     }
 })
 
-const isConnected = ref(props.isConnected)
 const ip = ref('')
 const port = ref('')
 const username = ref('')
@@ -60,7 +59,7 @@ function disconnect() {
             <input class="submit" type="submit" name="register" value="注册" @click="register" />
         </span>
         <span class="btn-span">
-            <input class="submit" type="submit" name="login" value="断开连接" @click="disconnect" />
+            <input class="quit" type="submit" name="login" value="断开连接" @click="disconnect" />
         </span>
     </form>
 </template>
@@ -70,6 +69,7 @@ function disconnect() {
     --bg-light: #efefef;
     --bg-dark: #707070;
     --clr: #58bc82;
+    --clr-warn: #ff5722;
     --clr-alpha: #9c9c9c60;
     display: flex;
     flex-direction: column;
@@ -123,7 +123,8 @@ function disconnect() {
     gap: 1rem;
 }
 
-.btn-span .submit {
+.btn-span .submit,
+.btn-span .quit {
     padding: 1rem 0.75rem;
     width: 100%;
     display: flex;
@@ -142,6 +143,10 @@ function disconnect() {
 .btn-span .submit:hover {
     background-color: var(--clr);
     color: var(--bg-dark);
+}
+
+.btn-span .quit:hover {
+    background-color: var(--clr-warn);
 }
 
 .span {

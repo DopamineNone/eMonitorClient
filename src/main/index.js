@@ -1,69 +1,22 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
+import { createWindow } from './init'
+import { createTray } from './tray'
 
-const { Tray, Menu } = require('electron')
 const path = require('path')
 
 let tray = null
 let mainWindow
 
-function createWindow() {
-    // Create the browser window.
-    mainWindow = new BrowserWindow({
-        width: 640,
-        height: 735,
-        show: false,
-        autoHideMenuBar: true,
-        ...(process.platform === 'linux' ? { icon } : {}),
-        webPreferences: {
-            preload: join(__dirname, '../preload/index.js'),
-            sandbox: false
-        }
-    })
+// 禁止应用多开
+const getLock = app.requestSingleInstanceLock()
 
-    mainWindow.on('ready-to-show', () => {
-        mainWindow.show()
+if (!getLock) {
+    app.quit()
+} else {
+    app.on('second-instance', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
-    //下面这是托盘部分
-    mainWindow.on('minimize', (event) => {
-        event.preventDefault() // 阻止默认的最小化行为
-        mainWindow.hide() // 隐藏窗口
-    })
-
-    mainWindow.webContents.setWindowOpenHandler((details) => {
-        shell.openExternal(details.url)
-        return { action: 'deny' }
-    })
-
-    // HMR for renderer base on electron-vite cli.
-    // Load the remote URL for development or the local html file for production.
-    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-        mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
-    } else {
-        mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
-    }
-}
-//托盘图标
-function createTray() {
-    tray = new Tray(path.join(__dirname, '../../build/icon.ico')) //先拿图标代替
-    const contextMenu = Menu.buildFromTemplate([
-        { label: '显示应用', click: () => mainWindow.show() },
-        { label: '退出', click: () => app.quit() }
-    ])
-    tray.setToolTip('eMonitor')
-    tray.setContextMenu(contextMenu)
-
-    tray.on('click', () => {
-        showWindow()
-    })
-}
-
-function showWindow() {
-    if (mainWindow) {
-        mainWindow.show()
-    }
 }
 
 // This method will be called when Electron has finished
@@ -83,8 +36,8 @@ app.whenReady().then(() => {
     // IPC test
     ipcMain.on('ping', () => console.log('pong'))
 
-    createWindow()
-    createTray()
+    createWindow(mainWindow)
+    createTray(tray, mainWindow, app)
     app.on('activate', function () {
         // On macOS it's common to re-create a window in the app when the
         // dock icon is clicked and there are no other windows open.

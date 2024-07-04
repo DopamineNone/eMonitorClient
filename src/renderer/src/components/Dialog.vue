@@ -17,12 +17,17 @@ const props = defineProps({
             return [
                 {
                     name: '确认',
-                    callback: () => {
-                        useStatusStore().dialogVisible = false
-                    }
+                    callback: () => {}
                 }
             ]
         }
+    }
+})
+
+props.buttons.forEach((item) => {
+    item.click = () => {
+        item.callback()
+        useStatusStore().dialogVisible = false
     }
 })
 </script>
@@ -33,7 +38,7 @@ const props = defineProps({
             <p class="title">{{ title }}</p>
             <p class="message">{{ message }}</p>
             <div v-for="(item, index) in buttons" :key="index" class="dialog-buttons">
-                <button @click="item.callback">{{ item.name }}</button>
+                <button @click="item.click">{{ item.name }}</button>
             </div>
         </div>
     </div>

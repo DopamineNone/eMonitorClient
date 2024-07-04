@@ -1,15 +1,34 @@
 <script setup>
 import { onMounted, onBeforeMount, onBeforeUnmount, watchEffect } from 'vue'
 import { useStatusStore } from '../store/status'
-import { runScreenShotTimer, stopScreenShotTimer } from '../utils/monitor'
-const status = useStatusStore()
+import { getScreenShot } from '../utils/monitor'
+import { closeWebSocket } from '../utils/wss'
 
+const status = useStatusStore()
+let timer = null
+
+// 定时截屏器
+function runScreenShotTimer(video) {
+    clearInterval(timer)
+    const Timer = () => {
+        return setInterval(() => {
+            getScreenShot(video)
+        }, status.uploadFrequency)
+    }
+    timer = Timer()
+}
+
+// 停止定时截屏器
+function stopScreenShotTimer() {
+    clearInterval(timer)
+    timer = null
+}
 // 重新加载窗口大小
 onBeforeMount(() => {
     window.api.setWindowSize(1280, 900)
 })
 
-// UI元素载入后，加载屏幕显示源
+// UI元素载入后，加载屏幕显示源，并启动定时截屏器
 onMounted(() => {
     const video = document.getElementById('video')
     if (video && status.stream instanceof MediaStream) {
@@ -17,9 +36,13 @@ onMounted(() => {
         video.srcObject = status.stream
         video.play()
     }
-    runScreenShotTimer()
-
-    watchEffect()
+    runScreenShotTimer(video)
+    // 监听频率变化，更新定时截屏器
+    watchEffect(() => {
+        status.uploadFrequency
+        stopScreenShotTimer()
+        runScreenShotTimer(video)
+    })
 })
 
 // 该页面被销毁时，关闭视频播放
@@ -29,7 +52,6 @@ onBeforeUnmount(() => {
         video.srcObject = null
     }
     stopScreenShotTimer()
-    status.uploadQueue = []
 })
 </script>
 
@@ -39,7 +61,7 @@ onBeforeUnmount(() => {
         <li></li>
     </ul>
     <span class="btn-span">
-        <input class="quit" type="submit" name="login" value="断开连接" @click="disconnect" />
+        <input class="quit" type="submit" name="login" value="断开连接" @click="closeWebSocket" />
     </span>
 </template>
 
@@ -50,11 +72,12 @@ onBeforeUnmount(() => {
 
 .btn-span {
     width: 100%;
-    max-width: 400px;
+    max-width: 250px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+    margin: 50px auto;
 }
 
 .btn-span .quit {

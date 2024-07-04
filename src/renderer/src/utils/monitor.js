@@ -6,10 +6,7 @@
 import JSZip from 'jszip'
 import { useStatusStore } from '../store/status'
 import { pinia } from '../store/index'
-import { watchEffect } from 'vue'
 import { uploadRequestHandler } from '../api/upload'
-
-let timer = null
 
 // 获取屏幕监控视频流函数
 export async function getScreenStream() {
@@ -28,29 +25,12 @@ export async function getScreenStream() {
     useStatusStore(pinia).stream = stream
 }
 
-// 定时截屏器
-export function runScreenShotTimer(video) {
-    const frequency = useStatusStore(pinia).uploadFrequency
-    const Timer = () => {
-        return setInterval(getScreenShot(video), frequency)
-    }
-    timer = Timer()
-    watchEffect(() => {
-        frequency
-        clearInterval(timer)
-        timer = Timer()
-    })
-}
-
-export function stopScreenShotTimer() {
-    clearInterval(timer)
-}
-
 // 截屏处理函数
-function getScreenShot(videoDOM) {
+export function getScreenShot(videoDOM) {
+    console.log('working')
     const canvas = document.createElement('canvas')
-    canvas.width = 1280
-    canvas.height = 720
+    canvas.width = videoDOM.videoWidth
+    canvas.height = videoDOM.videoHeight
     const ctx = canvas.getContext('2d')
 
     // 绘制视频到canvas上
@@ -72,8 +52,13 @@ function getScreenShot(videoDOM) {
             // 生成 ZIP 文件，在进行 base64 编码并上传
             zip.generateAsync({ type: 'uint8array' })
                 .then((buffer) => {
-                    const screenshot = btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)))
-                    uploadRequestHandler(screenshot)
+                    const chuckSize = 1024 * 3
+                    let res = ''
+                    for (let i = 0; i < buffer.length; i += chuckSize) {
+                        res += btoa(String.fromCharCode.apply(null, buffer.slice(i, i + chuckSize)))
+                    }
+                    // console.log(res)
+                    // uploadRequestHandler(screenshot)
                 })
                 .catch((err) => {
                     console.error(err)

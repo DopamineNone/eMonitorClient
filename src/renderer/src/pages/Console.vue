@@ -76,7 +76,6 @@ onBeforeUnmount(() => {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    margin: 50px auto;
 }
 
 .btn-span .quit {

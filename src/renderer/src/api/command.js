@@ -5,5 +5,5 @@
 
 export function commandHandler(frequencyInSeconds) {
     // 使用 configStore 修改 store 中的状态
-    window.setFrequency = frequencyInSeconds * 1000
+    window.setFrequency(frequencyInSeconds * 1000)
 }

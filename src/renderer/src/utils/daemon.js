@@ -35,16 +35,16 @@ export const responseHandler = {
     },
     // socket 关闭处理器
     closeHandler: (e) => {
-        console.log('WebSocket 已关闭：', e.code, e.reason)
+        console.log('WebSocket 已关闭：', e)
         window.api.alert('WebSocket 已关闭，请检查网络连接')
         window.setLoginStatus(false)
-        window.setConnectStatus(true)
+        window.setConnectStatus(false)
     },
     // 错wang
     errorHandler: (e) => {
-        console.log('WebSocket 发生错误：', e.message)
-        window.api.alert('WebSocket 发生错误，请检查网络连接')
-        window.setLoginStatus(false)
-        window.setConnectStatus(true)
+        console.log('WebSocket 发生错误：', e)
+        // window.api.alert('WebSocket 发生错误，请检查网络连接')
+        // window.setLoginStatus(false)
+        // window.setConnectStatus(false)
     }
 }

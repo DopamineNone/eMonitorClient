@@ -44,5 +44,5 @@ export function closeWebSocket() {
     window.wss.close(1000, 'close by client')
     window.wss = null
     window.setWss(null)
-    window.setConnectStatus(false)
+    // window.setConnectStatus(false)
 }

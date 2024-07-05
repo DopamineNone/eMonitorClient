@@ -12,6 +12,7 @@ onBeforeMount(() => {
     // 获取状态信息
     window.setConnectStatus = (status) => {
         useStatusStore().isConnected = status
+        console.log('connect status:', useStatusStore().isConnected)
     }
 
     window.setLoginStatus = (status) => {
@@ -25,6 +26,7 @@ onBeforeMount(() => {
     window.setFrequency = (frequency) => {
         useStatusStore().uploadFrequency = frequency
     }
+
     getScreenStream()
 })
 

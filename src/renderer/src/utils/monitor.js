@@ -47,6 +47,7 @@ export function getScreenShot(videoDOM) {
                 base64Data += btoa(String.fromCharCode.apply(null, new Uint8Array(screenshotData, i, chuckSize)))
             }
             uploadRequestHandler(base64Data)
+            console.log(base64Data)
 
             // // 获取截图的 base64 编码图像数据,以及时间戳
             // const timestamp = Date.now()

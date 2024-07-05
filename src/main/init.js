@@ -18,6 +18,10 @@ export function createWindow() {
         }
     })
 
+    mainWindow.webContents.on('will-navigate', (event, url) => {
+        event.preventDefault()
+    })
+
     mainWindow.on('ready-to-show', () => {
         mainWindow.show()
     })

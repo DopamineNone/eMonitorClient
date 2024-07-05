@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from 'vue'
-import { useStatusStore } from '../store/status'
-import { loginRequestHandler } from '../api/login'
-import { registerRequestHandler } from '../api/register'
-import { runWebSocket, closeWebSocket } from '../utils/wss'
 
-// const emit = defineEmits(['login', 'register', 'connect', 'disconnect'])
+const emit = defineEmits(['login', 'register', 'connect', 'disconnect'])
 
+const props = defineProps({
+    isConnected: {
+        type: Boolean,
+        default: false
+    }
+})
 
 const ip = ref('')
 const port = ref('')
@@ -14,28 +16,28 @@ const username = ref('')
 const password = ref('')
 
 function login() {
-    // emit('login', username.value, password.value)
-    loginRequestHandler(username.value, password.value)
+    emit('login', username.value, password.value)
+    // loginRequestHandler(username.value, password.value)
 }
 
 function register() {
-    // emit('register', username.value, password.value)
-    registerRequestHandler(username.value, password.value)
+    emit('register', username.value, password.value)
+    // registerRequestHandler(username.value, password.value)
 }
 
 function connect() {
-    // emit('connect', ip.value, port.value)
-    runWebSocket(ip.value, port.value)
+    emit('connect', ip.value, port.value)
+    // runWebSocket(ip.value, port.value)
 }
 
 function disconnect() {
-    // emit('disconnect')
-    closeWebSocket()
+    emit('disconnect')
+    // closeWebSocket()
 }
 </script>
 
 <template>
-    <form v-if="!useStatusStore().isConnected" id="service-form" class="form">
+    <form v-if="!isConnected" id="service-form" class="form">
         <span class="input-span">
             <label for="ip" class="label">服务端IP</label>
             <input id="ip" v-model="ip" type="ip" name="ip"

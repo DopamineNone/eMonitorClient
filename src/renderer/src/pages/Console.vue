@@ -31,7 +31,7 @@ onBeforeMount(() => {
 // UI元素载入后，加载屏幕显示源，并启动定时截屏器
 onMounted(() => {
     const video = document.getElementById('video')
-    if (video && status.stream instanceof MediaStream) {
+    if (video && window.stream instanceof MediaStream) {
         video.srcObject = window.stream
         video.play()
     }

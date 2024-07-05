@@ -8,12 +8,15 @@ import { sendRequest } from '../utils/wss'
 export function loginRequestHandler(username, password) {
     const loginData = {
         type: 'login',
-        username: username,
-        password: password,
-        mac: window.api.MAC // 获取本机MAC地址
+        msg: {
+            username: username,
+            password: password,
+            mac: window.api.MAC // 获取本机MAC地址
+        }
     }
 
     sendRequest(loginData) // 发送登录请求
+    console.log('login request sent', loginData)
 }
 
 export function loginResponseHandler(status) {

@@ -21,6 +21,7 @@ function newWebSocket(serverIp, serverPort) {
 }
 
 export function sendRequest(data) {
+    console.log('sendRequest', window.wss)
     window.wss?.send(JSON.stringify(data))
 }
 

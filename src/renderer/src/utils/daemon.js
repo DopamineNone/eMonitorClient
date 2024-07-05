@@ -17,8 +17,8 @@ export const responseHandler = {
     },
     // 接收到消息处理器
     messageHandler: (e) => {
-        console.log('WebSocket 收到消息：', e.message)
-        const result = JSON.parse(e.message)
+        console.log('WebSocket 收到消息：', e)
+        const result = JSON.parse(e.data)
         switch (result.type) {
             case 'register':
                 registerResponseHandler(result.msg.status)

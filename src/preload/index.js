@@ -1,4 +1,4 @@
-import { contextBridge, dialog } from 'electron'
+import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { ipcRenderer } from 'electron'
 import getmac from 'getmac'

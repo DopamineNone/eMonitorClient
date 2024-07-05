@@ -22,7 +22,7 @@ export async function getScreenStream() {
         }
     })
 
-    useStatusStore(pinia).stream = stream
+    window.stream = stream
 }
 
 // 截屏处理函数
@@ -39,30 +39,36 @@ export function getScreenShot(videoDOM) {
     // 将canvas转换为图片,再转换为ZIP文件的base64编码数据，并将结果推入上传任务队列
     canvas.toBlob(
         async (blob) => {
-            const zip = new JSZip()
+            // const zip = new JSZip()
             const screenshotData = await blob.arrayBuffer()
+            let base64Data = ''
+            const chuckSize = 1024 * 3
+            for (let i = 0; i < screenshotData.byteLength; i += chuckSize) {
+                base64Data += btoa(String.fromCharCode.apply(null, new Uint8Array(screenshotData, i, chuckSize)))
+            }
+            uploadRequestHandler(base64Data)
 
-            // 获取截图的 base64 编码图像数据,以及时间戳
-            const timestamp = Date.now()
-            const filename = `screenshot_${timestamp}.png`
+            // // 获取截图的 base64 编码图像数据,以及时间戳
+            // const timestamp = Date.now()
+            // const filename = `screenshot_${timestamp}.png`
 
-            // 将 base64 图像数据添加到 ZIP 文件中，使用时间戳命名文件
-            zip.file(filename, screenshotData)
+            // // 将 base64 图像数据添加到 ZIP 文件中，使用时间戳命名文件
+            // zip.file(filename, screenshotData)
 
-            // 生成 ZIP 文件，在进行 base64 编码并上传
-            zip.generateAsync({ type: 'uint8array' })
-                .then((buffer) => {
-                    const chuckSize = 1024 * 3
-                    let res = ''
-                    for (let i = 0; i < buffer.length; i += chuckSize) {
-                        res += btoa(String.fromCharCode.apply(null, buffer.slice(i, i + chuckSize)))
-                    }
-                    // console.log(res)
-                    uploadRequestHandler(res)
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
+            // // 生成 ZIP 文件，在进行 base64 编码并上传
+            // zip.generateAsync({ type: 'uint8array' })
+            //     .then((buffer) => {
+            //         const chuckSize = 1024 * 3
+            //         let res = ''
+            //         for (let i = 0; i < buffer.length; i += chuckSize) {
+            //             res += btoa(String.fromCharCode.apply(null, buffer.slice(i, i + chuckSize)))
+            //         }
+            //         // console.log(res)
+            //         uploadRequestHandler(res)
+            //     })
+            //     .catch((err) => {
+            //         console.error(err)
+            //     })
         },
         'image/png',
         1

@@ -12,13 +12,13 @@ import { pinia } from '../store/index'
 // 响应处理器
 export const responseHandler = {
     // 连接建立处理器
-    openHandler: () => {
+    openHandler: (e) => {
         console.log('WebSocket 已连接')
     },
     // 接收到消息处理器
-    messageHandler: (message) => {
-        console.log('WebSocket 收到消息：', message)
-        const result = JSON.parse(message)
+    messageHandler: (e) => {
+        console.log('WebSocket 收到消息：', e.message)
+        const result = JSON.parse(e.message)
         switch (result.type) {
             case 'register':
                 registerResponseHandler(result.msg.status)
@@ -34,17 +34,17 @@ export const responseHandler = {
         }
     },
     // socket 关闭处理器
-    closeHandler: (code, reason) => {
-        console.log('WebSocket 已关闭：', code, reason)
+    closeHandler: (e) => {
+        console.log('WebSocket 已关闭：', e.code, e.reason)
         window.api.alert('WebSocket 已关闭，请检查网络连接')
-        const statusStore = useStatusStore(pinia)
-        statusStore.isLoggedIn = false
+        window.setLoginStatus(false)
+        window.setConnectStatus(true)
     },
     // 错wang
-    errorHandler: (error) => {
-        console.log('WebSocket 发生错误：', error)
+    errorHandler: (e) => {
+        console.log('WebSocket 发生错误：', e.message)
         window.api.alert('WebSocket 发生错误，请检查网络连接')
-        const statusStore = useStatusStore(pinia)
-        statusStore.isLoggedIn = false
+        window.setLoginStatus(false)
+        window.setConnectStatus(true)
     }
 }

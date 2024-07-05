@@ -32,7 +32,7 @@ onBeforeMount(() => {
 onMounted(() => {
     const video = document.getElementById('video')
     if (video && status.stream instanceof MediaStream) {
-        video.srcObject = status.stream
+        video.srcObject = window.stream
         video.play()
     }
     runScreenShotTimer(video)

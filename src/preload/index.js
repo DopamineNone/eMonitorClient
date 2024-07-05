@@ -1,4 +1,4 @@
-import { contextBridge } from 'electron'
+import { contextBridge, dialog } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 import { ipcRenderer } from 'electron'
 import getmac from 'getmac'
@@ -12,11 +12,8 @@ const api = {
         // 向主进程发送消息，通知其修改窗口大小
         ipcRenderer.send('resize', width, height + (window.outerHeight - window.innerHeight))
     },
-    closeWindow: () => {
-        ipcRenderer.send('close')
-    },
-    minimizeWindow: () => {
-        ipcRenderer.send('minimize')
+    alert: (message) => {
+        ipcRenderer.send('alert', message)
     }
 }
 

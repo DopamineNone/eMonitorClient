@@ -58,7 +58,7 @@ export function getScreenShot(videoDOM) {
                         res += btoa(String.fromCharCode.apply(null, buffer.slice(i, i + chuckSize)))
                     }
                     // console.log(res)
-                    // uploadRequestHandler(screenshot)
+                    uploadRequestHandler(res)
                 })
                 .catch((err) => {
                     console.error(err)

@@ -7,7 +7,7 @@ import { registerResponseHandler } from '../api/register'
 import { loginResponseHandler } from '../api/login'
 import { commandHandler } from '../api/command'
 import { useStatusStore } from '../store/status'
-import { pinia } from '../store'
+import { pinia } from '../store/index'
 
 // 响应处理器
 export const responseHandler = {
@@ -36,12 +36,14 @@ export const responseHandler = {
     // socket 关闭处理器
     closeHandler: (code, reason) => {
         console.log('WebSocket 已关闭：', code, reason)
+        window.api.alert('WebSocket 已关闭，请检查网络连接')
         const statusStore = useStatusStore(pinia)
         statusStore.isLoggedIn = false
     },
-    // 错误处理器
+    // 错wang
     errorHandler: (error) => {
         console.log('WebSocket 发生错误：', error)
+        window.api.alert('WebSocket 发生错误，请检查网络连接')
         const statusStore = useStatusStore(pinia)
         statusStore.isLoggedIn = false
     }

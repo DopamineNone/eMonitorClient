@@ -4,11 +4,11 @@
 
 import { WebSocket } from 'ws'
 import { useStatusStore } from '../store/status'
-import { pinia } from '../store'
+import { pinia } from '../store/index'
 import { responseHandler } from './daemon'
 
 // 创建新的Websocket
-function newWebSocket(serverIp = 'localhost', serverPort = 8080) {
+function newWebSocket(serverIp, serverPort) {
     try {
         const wss = new WebSocket(`ws://${serverIp}:${serverPort}`)
 
@@ -20,26 +20,30 @@ function newWebSocket(serverIp = 'localhost', serverPort = 8080) {
         return wss
     } catch (error) {
         console.error(error)
-        return null
     }
+    return null
 }
 
-function sendRequest(data) {
+export function sendRequest(data) {
     const status = useStatusStore(pinia)
     status.wss?.send(JSON.stringify(data))
 }
 
-function runWebSocket(serverIP, serverPort) {
+export function runWebSocket(serverIP = 'localhost', serverPort = 8080) {
     const wss = newWebSocket(serverIP, serverPort)
     if (wss !== null) {
         useStatusStore(pinia).wss = wss
+        window.api.alert('连接成功！')
+    } else {
+        window.api.alert('连接失败！')
     }
 }
 
-function closeWebSocket() {
+export function closeWebSocket() {
     const status = useStatusStore(pinia)
+    if (status.wss === null) {
+        return
+    }
     status.wss?.close(1000, 'close by client')
     status.wss = null
 }
-
-export { runWebSocket, closeWebSocket, sendRequest }

@@ -42,7 +42,7 @@ function disconnect() {
             <input id="port" v-model="port" type="port" name="port"
         /></span>
         <span class="btn-span">
-            <input class="submit" type="submit" name="login" value="连接" @click="connect" />
+            <input class="submit" type="submit" name="connect" value="连接" @click="connect" />
         </span>
     </form>
     <form v-else id="auth-form" class="form">
@@ -59,7 +59,7 @@ function disconnect() {
             <input class="submit" type="submit" name="register" value="注册" @click="register" />
         </span>
         <span class="btn-span">
-            <input class="quit" type="submit" name="login" value="断开连接" @click="disconnect" />
+            <input class="quit" type="submit" name="disconnect" value="断开连接" @click="disconnect" />
         </span>
     </form>
 </template>

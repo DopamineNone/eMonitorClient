@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron'
+import { ipcMain, dialog } from 'electron'
 
 export function loadIPCListeners(mainWindow, app) {
     // 监听窗口大小变化
@@ -7,14 +7,15 @@ export function loadIPCListeners(mainWindow, app) {
         mainWindow.center()
     })
 
-    // 监听窗口最小化
-    ipcMain.on('minimize', () => {
-        mainWindow.hide()
-    })
-
-    // 监听窗口关闭
-    ipcMain.on('close', () => {
-        mainWindow.destroy()
-        app.quit()
+    ipcMain.on('alert', (event, message) => {
+        const options = {
+            type: 'warning',
+            buttons: ['确认'],
+            defaultId: 0,
+            cancelId: 0,
+            detail: message,
+            message: ''
+        }
+        dialog.showMessageBoxSync(null, options)
     })
 }

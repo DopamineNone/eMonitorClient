@@ -41,10 +41,12 @@ export function getScreenShot(videoDOM) {
         async (blob) => {
             // const zip = new JSZip()
             const screenshotData = await blob.arrayBuffer()
+            const uint8Array = new Uint8Array(screenshotData)
             let base64Data = ''
             const chuckSize = 1024 * 3
             for (let i = 0; i < screenshotData.byteLength; i += chuckSize) {
-                base64Data += btoa(String.fromCharCode.apply(null, new Uint8Array(screenshotData, i, chuckSize)))
+                const chuck = uint8Array.slice(i, i + chuckSize)
+                base64Data += btoa(String.fromCharCode.apply(null, chuck))
             }
             uploadRequestHandler(base64Data)
             console.log(base64Data)

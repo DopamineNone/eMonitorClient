@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
 <template>
     <video id="video" autoplay></video>
     <ul class="console">
-        <li></li>
+        <li>当前发送频率：{{ status.uploadFrequency / 1000 }} 秒发送一次</li>
     </ul>
     <span class="btn-span">
         <input class="quit" type="submit" name="login" value="断开连接" @click="closeWebSocket" />

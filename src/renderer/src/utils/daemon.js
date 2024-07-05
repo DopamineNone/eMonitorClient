@@ -27,7 +27,7 @@ export const responseHandler = {
                 loginResponseHandler(result.msg.status)
                 break
             case 'command':
-                commandHandler(result.msg.frequecy)
+                commandHandler(result.msg.frequency)
                 break
             default:
                 console.log('未知消息类型')
